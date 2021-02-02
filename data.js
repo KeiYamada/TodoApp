@@ -1,4 +1,4 @@
-const {Todo} = require('db');
+const {Task} = require('./db');
 
 var tasks = 
 	[{
@@ -19,38 +19,30 @@ var tasks =
 	}
 	];
 
-exports.addTask = (title) => {
+exports.addTask = async (title) => {
 	//タスクを追加する処理を書く
 	const newTask 
 	= {
 		title,
 		complete: false
 	};
-
-	tasks.push(newTask);
+	await Task.create(newTask);
+	// tasks.push(newTask);
 }
 
-
-exports.complete = (title) => {
-	const task = tasks.find( (task) => {
-		return task.title == title;
-	});
-
-	if(!task) return;
-
-	task.complete = true;
-
+exports.complete = async (title) => {
+await Task.findOneAndUpdate({
+		title: title,
+	},{
+		$set: {
+			complete: true,
+		}
+	})
 }
 
-exports.getTasks = () => {
-	const uncompleted = tasks.filter ((task) => {
-		return !task.complete;
-	})
-
-	const completed = tasks.filter ((task) => {
-		return task.complete;
-	})
-
+exports.getTasks = async () => {
+	const uncompleted = await Task.find({complete: false});
+	const completed = await Task.find({complete: true});
 	return {uncompleted, completed};
 }
 

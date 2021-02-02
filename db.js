@@ -1,9 +1,6 @@
 const mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost:27017/test', {useNewUrlParser: true, useUnifiedTopology: true});
 
-
-const mongoose = requrie('mongoose');
-
 const schema = {
 	title: {
 		type: String,	
@@ -13,4 +10,4 @@ const schema = {
 	},
 };
 
-exports.Todo = mongoose.model('Todo', schema);
+exports.Task = mongoose.model('Task', schema);
